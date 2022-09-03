@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class MyMobileBody extends StatelessWidget {
@@ -8,24 +10,24 @@ class MyMobileBody extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.deepPurple[200],
       appBar: AppBar(
-        title: Text('M O B I L E'),
+        title: Text('Past Questions'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            // youtube video
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: AspectRatio(
                 aspectRatio: 16 / 9,
                 child: Container(
-                  color: Colors.deepPurple[400],
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    image: DecorationImage(image: AssetImage('assets/icons/app.png'))
+                  ),
                 ),
               ),
             ),
-
-            // comment section & recommended videos
             Expanded(
               child: ListView.builder(
                 itemCount: 8,

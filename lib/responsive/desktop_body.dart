@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class MyDesktopBody extends StatelessWidget {
@@ -8,7 +10,7 @@ class MyDesktopBody extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.deepPurple[200],
       appBar: AppBar(
-        title: Text('D E S K T O P'),
+        title: Text('Past Questions'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
