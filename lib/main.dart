@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'homepage.dart';
+import 'package:fpi_question_bank/Screens/Login/login_screen.dart';
+import 'package:fpi_question_bank/Screens/Welcome/welcome_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: WelcomeScreen(),
       theme: ThemeData(primarySwatch: Colors.deepPurple),
     );
   }
