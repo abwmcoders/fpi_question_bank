@@ -62,38 +62,37 @@ class LayoutWidget extends StatelessWidget {
           ),
         ),
       ),
-      body: SafeArea(
-          child: SingleChildScrollView(
+      body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(left: 10, right: 10),
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(img1), fit: BoxFit.contain)),
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 10, right: 10),
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(img2), fit: BoxFit.contain)),
-            ),
-            isThree ? Container(
-              margin: EdgeInsets.only(left: 10, right: 10),
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(img3), fit: BoxFit.contain)),
-            ) : Container(),
-          ],
+      children: [
+        Container(
+          margin: EdgeInsets.only(left: 10, right: 10),
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(img1), fit: BoxFit.contain)),
         ),
-      )),
+        Container(
+          margin: EdgeInsets.only(left: 10, right: 10),
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(img2), fit: BoxFit.contain)),
+        ),
+        isThree ? Container(
+          margin: EdgeInsets.only(left: 10, right: 10),
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(img3), fit: BoxFit.contain)),
+        ) : Container(),
+      ],
+        ),
+      ),
     );
   }
 }
