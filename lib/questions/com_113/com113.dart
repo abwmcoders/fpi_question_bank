@@ -14,6 +14,7 @@ class Com113 extends StatelessWidget {
       img1: 'assets/images/113one.png',
       img2: 'assets/images/113two.png',
       img3: 'assets/images/113three.png',
+      img4: '',
     );
   }
 }

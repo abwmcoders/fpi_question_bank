@@ -14,6 +14,7 @@ class Com123 extends StatelessWidget {
       img1: 'assets/images/apppack1.png',
       img2: 'assets/images/apppack2.png',
       img3: '',
+      img4: '',
     );
   }
 }

@@ -14,6 +14,7 @@ class Gns101 extends StatelessWidget {
       img1: 'assets/images/eng1.png',
       img2: 'assets/images/eng2.png',
       img3: '',
+      img4: '',
     );
   }
 }

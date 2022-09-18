@@ -14,6 +14,7 @@ class Coma2 extends StatelessWidget {
       img1: 'assets/images/apppp1.png',
       img2: 'assets/images/apppp2.png',
       img3: '',
+      img4: '',
     );
   }
 }

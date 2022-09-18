@@ -14,6 +14,7 @@ class Com112 extends StatelessWidget {
       img1: 'assets/images/digital1.png',
       img2: 'assets/images/digital2.png',
       img3: 'assets/images/digital3.png',
+      img4: '',
     );
   }
 }

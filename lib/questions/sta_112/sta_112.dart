@@ -14,6 +14,7 @@ class Sta112 extends StatelessWidget {
       img1: 'assets/images/sta1.png',
       img2: 'assets/images/sta2.png',
       img3: 'assets/images/sta3.png',
+      img4: '',
       isThree: true,
     );
   }

@@ -26,7 +26,7 @@ class LoginForm extends StatelessWidget {
               hintText: "Your Matric Number",
               prefixIcon: Padding(
                 padding: const EdgeInsets.all(defaultPadding),
-                child: Icon(Icons.person),
+                child: Icon(Icons.cabin),
               ),
             ),
           ),

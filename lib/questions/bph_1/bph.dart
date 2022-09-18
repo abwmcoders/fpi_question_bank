@@ -14,6 +14,7 @@ class Bph extends StatelessWidget {
       img1: 'assets/images/bp1.png',
       img2: 'assets/images/bp2.png',
       img3: '',
+      img4: '',
     );
   }
 }
@@ -25,12 +26,14 @@ class LayoutWidget extends StatelessWidget {
     required this.img1,
     required this.img2,
     required this.img3,
+    required this.img4,
     this.isThree = false,
+    this.isFour = false,
   }) : super(key: key);
 
   final String title;
-  final String img1, img2, img3;
-  final bool isThree;
+  final String img1, img2, img3, img4;
+  final bool isThree, isFour;
 
   @override
   Widget build(BuildContext context) {
@@ -64,33 +67,58 @@ class LayoutWidget extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
-        child: Column(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Column(
       children: [
-        Container(
-          margin: EdgeInsets.only(left: 10, right: 10),
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(img1), fit: BoxFit.contain)),
-        ),
-        Container(
-          margin: EdgeInsets.only(left: 10, right: 10),
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(img2), fit: BoxFit.contain)),
-        ),
-        isThree ? Container(
-          margin: EdgeInsets.only(left: 10, right: 10),
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(img3), fit: BoxFit.contain)),
-        ) : Container(),
+          Container(
+            //padding: EdgeInsets.only(left: 10, right: 10),
+            //height: MediaQuery.of(context).size.height,
+            //height: 700,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                // image: DecorationImage(
+                //     image: AssetImage(img1), fit: BoxFit.contain),
+                    ),
+                    child: Expanded(child: Image.asset(img1)),
+          ),
+          Container(
+            //margin: EdgeInsets.only(left: 10, right: 10),
+            //height: MediaQuery.of(context).size.height,
+            //height: 700,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                // image: DecorationImage(
+                //     image: AssetImage(img2), fit: BoxFit.contain),
+                    ),
+                    child: Expanded(child: Image.asset(img2)),
+          ),
+          isThree ? Container(
+            //margin: EdgeInsets.only(left: 10, right: 10),
+            //height: MediaQuery.of(context).size.height,
+            //height: 700,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                // image: DecorationImage(
+                //     image: AssetImage(img3), fit: BoxFit.contain,
+                //     ),
+                    ),
+                    child: Expanded(child: Image.asset(img3)),
+          ) : Container(),
+          isFour ? Container(
+            //margin: EdgeInsets.only(left: 10, right: 10),
+            //height: MediaQuery.of(context).size.height,
+            //height: 700,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                // image: DecorationImage(
+                //     image: AssetImage(img3), fit: BoxFit.contain,
+                //     ),
+                    ),
+                    child: Expanded(child: Image.asset(img4)),
+          ) : Container(),
       ],
+          ),
         ),
       ),
     );
