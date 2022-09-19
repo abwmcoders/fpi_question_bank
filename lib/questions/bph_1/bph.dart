@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:fpi_question_bank/helper.dart';
 
 import '../../responsive/mobile_body.dart';
 
@@ -75,47 +76,50 @@ class LayoutWidget extends StatelessWidget {
             //padding: EdgeInsets.only(left: 10, right: 10),
             //height: MediaQuery.of(context).size.height,
             //height: 700,
+            height: screenHeight(context),
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
                 // image: DecorationImage(
                 //     image: AssetImage(img1), fit: BoxFit.contain),
                     ),
-                    child: Expanded(child: Image.asset(img1)),
+                    child: Image.asset(img1),
           ),
           Container(
             //margin: EdgeInsets.only(left: 10, right: 10),
             //height: MediaQuery.of(context).size.height,
-            //height: 700,
+            height: screenHeight(context),
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
                 // image: DecorationImage(
                 //     image: AssetImage(img2), fit: BoxFit.contain),
                     ),
-                    child: Expanded(child: Image.asset(img2)),
+                    child: Image.asset(img2),
           ),
           isThree ? Container(
             //margin: EdgeInsets.only(left: 10, right: 10),
             //height: MediaQuery.of(context).size.height,
             //height: 700,
+            height: screenHeight(context),
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
                 // image: DecorationImage(
                 //     image: AssetImage(img3), fit: BoxFit.contain,
                 //     ),
                     ),
-                    child: Expanded(child: Image.asset(img3)),
+                    child: Image.asset(img3),
           ) : Container(),
           isFour ? Container(
             //margin: EdgeInsets.only(left: 10, right: 10),
             //height: MediaQuery.of(context).size.height,
             //height: 700,
+            height: screenHeight(context),
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
                 // image: DecorationImage(
                 //     image: AssetImage(img3), fit: BoxFit.contain,
                 //     ),
                     ),
-                    child: Expanded(child: Image.asset(img4)),
+                    child: Image.asset(img4),
           ) : Container(),
       ],
           ),
