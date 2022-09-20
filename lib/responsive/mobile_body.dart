@@ -1,6 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fpi_question_bank/Screens/Signup/components/signup_form.dart';
+import 'package:fpi_question_bank/Screens/Welcome/welcome_screen.dart';
+import 'package:fpi_question_bank/auth_service.dart';
+import 'package:fpi_question_bank/helper_function.dart';
 import 'package:fpi_question_bank/questions/bph_1/bph.dart';
 import 'package:fpi_question_bank/questions/com124/com_124.dart';
 import 'package:fpi_question_bank/questions/com_112/com_112.dart';
@@ -18,404 +23,674 @@ import 'package:fpi_question_bank/questions/sta_112/sta_112.dart';
 import '../constants.dart';
 import '../helper.dart';
 
-class MyMobileBody extends StatelessWidget {
-  const MyMobileBody({Key? key}) : super(key: key);
+class MyMobileBody extends StatefulWidget {
+  MyMobileBody({Key? key}) : super(key: key);
+
+  @override
+  State<MyMobileBody> createState() => _MyMobileBodyState();
+}
+
+class _MyMobileBodyState extends State<MyMobileBody> {
+  AuthServices auth = AuthServices();
+  String username = '';
+  String userEmail = '';
+  String matric = '';
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+  }
+
+  getUserData() async {
+    await HelperFunction.getUserEmailFromSp().then((value) {
+      setState(() {
+        userEmail = value!;
+      });
+    });
+
+    await HelperFunction.getUserNameFromSp().then((value) {
+      setState(() {
+        username = value!;
+      });
+    });
+
+    await HelperFunction.getUserMatric().then((value) {
+      setState(() {
+        matric = value!;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xff218f1f),
-        elevation: 0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: GestureDetector(
-              onTap: () {
-                //Navigator.pop(context);
-              },
-              child: IconLimiter(
-                applyColor: true,
-                height: 20,
-                width: 20,
-                image: 'assets/icons/logout.png',
-              ),
-            ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(color: Color(0xff218f1f)),
-          child: Stack(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Computer Science Past\nQuestions',
-                      style: TextStyle(
-                        fontSize: 28,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Welcome to our past questions site .',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color(0xff218f1f),
+          elevation: 0,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: GestureDetector(
+                onTap: () async {
+                  try {
+                   showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('Logout'),
+                            content: Text('You are about to logout'),
+                            actions: [
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: Icon(
+                                    Icons.cancel,
+                                    color: Colors.green,
+                                  )),
+                              IconButton(
+                                  onPressed: () async {
+                                    auth.loginUser;
+                                    await HelperFunction.saveUserLoggedInStatus(
+                                        false);
+                                    await HelperFunction.saveUserEmailKey('');
+                                    await HelperFunction.saveUserMatricKey('');
+                                    await HelperFunction.saveUsername('');
+                                    await FirebaseAuth.instance.signOut();
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                WelcomeScreen()));
+                                  },
+                                  icon: Icon(
+                                    Icons.done,
+                                    color: Colors.red,
+                                  )),
+                            ],
+                          );
+                        });
+                  } catch (e) {
+                    print(e);
+                  }
+                },
+                child: IconLimiter(
+                  applyColor: true,
+                  height: 20,
+                  width: 20,
+                  image: 'assets/icons/logout.png',
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.86,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(.9),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(50),
-                      topRight: Radius.circular(50),
-                    ),
+            ),
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(color: Color(0xff218f1f)),
+            child: Stack(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Computer Science Past\nQuestions',
+                        style: TextStyle(
+                          fontSize: 28,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Welcome to our past questions site .',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
                   ),
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
                   child: Container(
-                    margin: EdgeInsets.only(top: 10, left: 30, right: 30),
-                    padding: EdgeInsets.only(top: 20),
+                    height: MediaQuery.of(context).size.height * 0.86,
+                    width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(.9),
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(50),
                         topRight: Radius.circular(50),
                       ),
                     ),
-                    child: GridView.count(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 30,
-                      crossAxisSpacing: 30,
-                      children: [
-                        HomeMenuCard(
-                          title: 'COM 126',
-                          onTap: () {
-                            selectOptionTile(context, content: Column(
-                              children: [
-                                OptionsTextStyle(
-                                    title: '2018/2019',
-                                    onTap: () {
-                                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Com126()));
-                                    },
-                                  ),
-                                   Divider(
-                                    thickness: 2,
-                                  ),
-                                  OptionsTextStyle(
-                                    title: '2015/2016',
-                                    onTap: () {
-                                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Com126Extra2()));
-                                    },
-                                  ),
-                              ],
-                            ),);
-
-                          },
+                    child: Container(
+                      margin: EdgeInsets.only(top: 10, left: 30, right: 30),
+                      padding: EdgeInsets.only(top: 20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(50),
+                          topRight: Radius.circular(50),
                         ),
-                        HomeMenuCard(
-                          title: 'COM 123',
-                          onTap: () {
-                            selectOptionTile(context, content: Column(
-                              children: [
-                                OptionsTextStyle(
-                                    title: '2019/2020',
-                                    onTap: () {
-                                      Navigator.push(
+                      ),
+                      child: GridView.count(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 30,
+                        crossAxisSpacing: 30,
+                        children: [
+                          HomeMenuCard(
+                            title: 'COM 126',
+                            onTap: () {
+                              selectOptionTile(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => Com123()));
-                                    },
-                                  ),
-                                   Divider(
-                                    thickness: 2,
-                                  ),
-                                  OptionsTextStyle(
-                                    title: '2017/2018',
-                                    onTap: () {
-                                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Coma2()));
-                                    },
-                                  ),
-                              ],
-                            ));
-                            
-                          },
-                        ),
-                        HomeMenuCard(
-                          title: 'COM 121',
-                          onTap: () {
-                            selectOptionTile(context, content: Column(
-                              children: [
-                                OptionsTextStyle(
-                                    title: '2014/2015',
-                                    onTap: () {
-                                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Com121()));
-                                    },
-                                  ),
-                                   Divider(
-                                    thickness: 2,
-                                  ),
-                                  OptionsTextStyle(
-                                    title: '2018/2019',
-                                    onTap: () {
-                                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Com121Extra()));
-                                    },
-                                  ),
-                              ],
-                            ));
-                            
-                          },
-                        ),
-                        HomeMenuCard(
-                          title: 'COM 125',
-                          onTap: () {
-                            selectOptionTile(context, content: Column(
-                              children: [
-                                OptionsTextStyle(
-                                    title: '2019/2020',
-                                    onTap: () {
-                                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Com125()));
-                                    },
-                                  ),
-                                   Divider(
-                                    thickness: 2,
-                                  ),
-                                  OptionsTextStyle(
-                                    title: '2017/2018',
-                                    onTap: () {
-                                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Com125Extra()));
-                                    },
-                                  ),
-                              ],
-                            ));
-                            
-                          },
-                        ),
-                        HomeMenuCard(
-                          title: 'COM 122',
-                          onTap: () {
-                            selectOptionTile(context, content: Column(
-                              children: [
-                                OptionsTextStyle(
-                                    title: '2018/2019',
-                                    onTap: () {
-                                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Com122()));
-                                    },
-                                  ),
-                              ],
-                            ));
-                            
-                          },
-                        ),
-                        HomeMenuCard(
-                          title: 'BPH 121',
-                          onTap: () {
-                            selectOptionTile(context, content: Column(
-                              children: [
-                                OptionsTextStyle(
-                                    title: '2019/2020',
-                                    onTap: () {
-                                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Bph()));
-                                    },
-                                  ),
-                              ],
-                            ));
-                            
-                          },
-                        ),
-                        HomeMenuCard(
-                          title: 'GNS 101',
-                          onTap: () {
-                            selectOptionTile(context, content: Column(
-                              children: [
-                                OptionsTextStyle(
-                                    title: '2014/2015',
-                                    onTap: () {
-                                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Gns101()));
-                                    },
-                                  ),
-                              ],
-                            ));
-                           
-                          },
-                        ),
-                        HomeMenuCard(
-                          title: 'COM 112',
-                          onTap: () {
-                            selectOptionTile(context, content: Column(
-                              children: [
-                                OptionsTextStyle(
-                                    title: '2014/2015',
-                                    onTap: () {
-                                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Com112()));
-                                    },
-                                  ),
-                              ],
-                            ));
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => Com112()));
-                          },
-                        ),
-                        HomeMenuCard(
-                          title: 'MTH 111',
-                          onTap: () {
-                            selectOptionTile(context, content: Column(
-                              children: [
-                                OptionsTextStyle(
-                                    title: '2014/2015',
-                                    onTap: () {
-                                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Mth111()));
-                                    },
-                                  ),
-                              ],
-                            ));
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => Mth111()));
-                          },
-                        ),
-                        HomeMenuCard(
-                          title: 'COM 113',
-                          onTap: () {
-                            selectOptionTile(context, content: Column(
-                              children: [
-                                OptionsTextStyle(
-                                    title: '2014/2015',
-                                    onTap: () {
-                                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Com113()));
-                                    },
-                                  ),
-                              ],
-                            ));
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => Com113()));
-                          },
-                        ),
-                        HomeMenuCard(
-                          title: 'COM 124',
-                          onTap: () {
-                            selectOptionTile(context, content: Column(
-                              children: [
-                                OptionsTextStyle(
-                                    title: '2017/2018',
-                                    onTap: () {
-                                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Com124()));
-                                    },
-                                  ),
-                                   Divider(
-                                    thickness: 2,
-                                  ),
-                                  OptionsTextStyle(
-                                    title: '2016/2017',
-                                    onTap: () {
-                                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Com124Extra()));
-                                    },
-                                  ),
-                              ],
-                            ));
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => Com124()));
-                          },
-                        ),
-                        HomeMenuCard(
-                          title: 'STA 112',
-                          onTap: () {
-                            selectOptionTile(context, content: Column(
-                              children: [
-                                OptionsTextStyle(
-                                    title: '2017/2018',
-                                    onTap: () {
-                                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Sta112()));
-                                    },
-                                  ),
-                              ],
-                            ));
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => Sta112()));
-                          },
-                        ),
-                      ],
+                                content: Column(
+                                  children: [
+                                    OptionsTextStyle(
+                                      title: '2018/2019',
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Com126()));
+                                      },
+                                    ),
+                                    Divider(
+                                      thickness: 2,
+                                    ),
+                                    OptionsTextStyle(
+                                      title: '2015/2016',
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Com126Extra2()));
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                          HomeMenuCard(
+                            title: 'COM 123',
+                            onTap: () {
+                              selectOptionTile(context,
+                                  content: Column(
+                                    children: [
+                                      OptionsTextStyle(
+                                        title: '2019/2020',
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Com123()));
+                                        },
+                                      ),
+                                      Divider(
+                                        thickness: 2,
+                                      ),
+                                      OptionsTextStyle(
+                                        title: '2017/2018',
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Coma2()));
+                                        },
+                                      ),
+                                    ],
+                                  ));
+                            },
+                          ),
+                          HomeMenuCard(
+                            title: 'COM 121',
+                            onTap: () {
+                              selectOptionTile(context,
+                                  content: Column(
+                                    children: [
+                                      OptionsTextStyle(
+                                        title: '2014/2015',
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Com121()));
+                                        },
+                                      ),
+                                      Divider(
+                                        thickness: 2,
+                                      ),
+                                      OptionsTextStyle(
+                                        title: '2018/2019',
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Com121Extra()));
+                                        },
+                                      ),
+                                    ],
+                                  ));
+                            },
+                          ),
+                          HomeMenuCard(
+                            title: 'COM 125',
+                            onTap: () {
+                              selectOptionTile(context,
+                                  content: Column(
+                                    children: [
+                                      OptionsTextStyle(
+                                        title: '2019/2020',
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Com125()));
+                                        },
+                                      ),
+                                      Divider(
+                                        thickness: 2,
+                                      ),
+                                      OptionsTextStyle(
+                                        title: '2017/2018',
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Com125Extra()));
+                                        },
+                                      ),
+                                    ],
+                                  ));
+                            },
+                          ),
+                          HomeMenuCard(
+                            title: 'COM 122',
+                            onTap: () {
+                              selectOptionTile(context,
+                                  content: Column(
+                                    children: [
+                                      OptionsTextStyle(
+                                        title: '2018/2019',
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Com122()));
+                                        },
+                                      ),
+                                    ],
+                                  ));
+                            },
+                          ),
+                          HomeMenuCard(
+                            title: 'BPH 121',
+                            onTap: () {
+                              selectOptionTile(context,
+                                  content: Column(
+                                    children: [
+                                      OptionsTextStyle(
+                                        title: '2019/2020',
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => Bph()));
+                                        },
+                                      ),
+                                    ],
+                                  ));
+                            },
+                          ),
+                          HomeMenuCard(
+                            title: 'GNS 101',
+                            onTap: () {
+                              selectOptionTile(context,
+                                  content: Column(
+                                    children: [
+                                      OptionsTextStyle(
+                                        title: '2014/2015',
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Gns101()));
+                                        },
+                                      ),
+                                    ],
+                                  ));
+                            },
+                          ),
+                          HomeMenuCard(
+                            title: 'COM 112',
+                            onTap: () {
+                              selectOptionTile(context,
+                                  content: Column(
+                                    children: [
+                                      OptionsTextStyle(
+                                        title: '2014/2015',
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Com112()));
+                                        },
+                                      ),
+                                    ],
+                                  ));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => Com112()));
+                            },
+                          ),
+                          HomeMenuCard(
+                            title: 'MTH 111',
+                            onTap: () {
+                              selectOptionTile(context,
+                                  content: Column(
+                                    children: [
+                                      OptionsTextStyle(
+                                        title: '2014/2015',
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Mth111()));
+                                        },
+                                      ),
+                                    ],
+                                  ));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => Mth111()));
+                            },
+                          ),
+                          HomeMenuCard(
+                            title: 'COM 113',
+                            onTap: () {
+                              selectOptionTile(context,
+                                  content: Column(
+                                    children: [
+                                      OptionsTextStyle(
+                                        title: '2014/2015',
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Com113()));
+                                        },
+                                      ),
+                                    ],
+                                  ));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => Com113()));
+                            },
+                          ),
+                          HomeMenuCard(
+                            title: 'COM 124',
+                            onTap: () {
+                              selectOptionTile(context,
+                                  content: Column(
+                                    children: [
+                                      OptionsTextStyle(
+                                        title: '2017/2018',
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Com124()));
+                                        },
+                                      ),
+                                      Divider(
+                                        thickness: 2,
+                                      ),
+                                      OptionsTextStyle(
+                                        title: '2016/2017',
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Com124Extra()));
+                                        },
+                                      ),
+                                    ],
+                                  ));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => Com124()));
+                            },
+                          ),
+                          HomeMenuCard(
+                            title: 'STA 112',
+                            onTap: () {
+                              selectOptionTile(context,
+                                  content: Column(
+                                    children: [
+                                      OptionsTextStyle(
+                                        title: '2017/2018',
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Sta112()));
+                                        },
+                                      ),
+                                    ],
+                                  ));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => Sta112()));
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
+          ),
+        ),
+        drawer: Drawer(
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.account_circle,
+                  color: Colors.grey.shade700,
+                  size: 150,
+                ),
+                UIHelper.verticalSPaceSmall,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Name:',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: UIHelper.kMediumFont,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      username,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: UIHelper.kMediumFont,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Email: ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: UIHelper.kMediumFont,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      userEmail,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Matric number: ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: UIHelper.kMediumFont,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      matric,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+                UIHelper.verticalSPaceSmall,
+                Divider(
+                  height: 2,
+                ),
+                ListTile(
+                  onTap: () {
+                    showSnackBar(context, kPrimaryColor, 'Coming soon');
+                  },
+                  selectedColor: kPrimaryColor,
+                  leading: Icon(Icons.group),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  selected: true,
+                  title: Text(
+                    'Our Team',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: UIHelper.kMediumFont,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  onTap: () {
+                     showSnackBar(context, kPrimaryColor, 'Coming soon');
+                  },
+                  leading: Icon(Icons.person),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  title: Text(
+                    'Profile',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: UIHelper.kMediumFont,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  onTap: () {
+                    showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('Logout'),
+                            content: Text('You are about to logout'),
+                            actions: [
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: Icon(
+                                    Icons.cancel,
+                                    color: Colors.green,
+                                  )),
+                              IconButton(
+                                  onPressed: () async {
+                                    auth.loginUser;
+                                    await HelperFunction.saveUserLoggedInStatus(
+                                        false);
+                                    await HelperFunction.saveUserEmailKey('');
+                                    await HelperFunction.saveUserMatricKey('');
+                                    await HelperFunction.saveUsername('');
+                                    await FirebaseAuth.instance.signOut();
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                WelcomeScreen()));
+                                  },
+                                  icon: Icon(
+                                    Icons.done,
+                                    color: Colors.red,
+                                  )),
+                            ],
+                          );
+                        });
+                  },
+                  leading: Icon(Icons.exit_to_app),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  title: Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: UIHelper.kMediumFont,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
-      drawer: Drawer(),
     );
   }
 }

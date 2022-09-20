@@ -31,8 +31,7 @@ class Com121Extra extends StatelessWidget {
       img1: 'assets/images/an java1.png',
       img2: 'assets/images/an java2.png',
       img3: 'assets/images/an java3.png',
-      img4: 'assets/images/an java4.png',
-      isFour: true,
+      img4: '',
       isThree: true,
     );
   }

@@ -41,21 +41,22 @@ class LayoutWidget extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: IconLimiter(
-              applyColor: false,
-              height: 20,
-              width: 20,
-              image: 'assets/icons/back.png',
-              color: Colors.green,
-            ),
-          ),
-        ),
+        automaticallyImplyLeading: false,
+        // leading: Padding(
+        //   padding: const EdgeInsets.all(15.0),
+        //   child: GestureDetector(
+        //     onTap: () {
+        //       Navigator.pop(context);
+        //     },
+        //     child: IconLimiter(
+        //       applyColor: false,
+        //       height: 20,
+        //       width: 20,
+        //       image: 'assets/icons/back.png',
+        //       color: Colors.green,
+        //     ),
+        //   ),
+        // ),
         backgroundColor: Color.fromARGB(255, 230, 234, 230),
         title: Text(
           title,

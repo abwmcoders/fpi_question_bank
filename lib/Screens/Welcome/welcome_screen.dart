@@ -10,30 +10,40 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Background(
-      child: SingleChildScrollView(
-        child: SafeArea(
-          child: Responsive(
-            desktop: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                const Expanded(
-                  child: WelcomeImage(),
-                ),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      SizedBox(
-                        width: 450,
-                        child: LoginAndSignupBtn(),
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Background(
+        child: SingleChildScrollView(
+          child: SafeArea(
+            child: Responsive(
+              desktop: WillPopScope(
+                onWillPop: () async {
+        return false;
+      },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const Expanded(
+                      child: WelcomeImage(),
+                    ),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          SizedBox(
+                            width: 450,
+                            child: LoginAndSignupBtn(),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
+              mobile: const MobileWelcomeScreen(),
             ),
-            mobile: const MobileWelcomeScreen(),
           ),
         ),
       ),
@@ -48,21 +58,26 @@ class MobileWelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        const WelcomeImage(),
-        Row(
-          children: const [
-            Spacer(),
-            Expanded(
-              flex: 8,
-              child: LoginAndSignupBtn(),
-            ),
-            Spacer(),
-          ],
-        ),
-      ],
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const WelcomeImage(),
+          Row(
+            children: const [
+              Spacer(),
+              Expanded(
+                flex: 8,
+                child: LoginAndSignupBtn(),
+              ),
+              Spacer(),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
