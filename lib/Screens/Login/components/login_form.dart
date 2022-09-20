@@ -33,7 +33,13 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
+    return  _isLoading
+        ? Center(
+            child: CircularProgressIndicator(
+              color: kPrimaryColor,
+            ),
+          )
+        : Form(
       key: formKey,
       child: Column(
         children: [
